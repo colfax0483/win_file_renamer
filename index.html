@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자모조립소</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.4/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-800 text-white transition duration-500">
+    <div class="container mx-auto p-4">
+        <!-- 타이틀 -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold">자모조립소</h1>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="flex mb-4">
+            <button id="tabFile" class="flex-1 text-center py-2 rounded-lg bg-gray-700 hover:bg-gray-600">파일명 합치기</button>
+            <button id="tabText" class="flex-1 text-center py-2 rounded-lg bg-gray-700 hover:bg-gray-600 ml-2">텍스트 자모 합치기</button>
+        </div>
+
+        <!-- 파일 업로드 영역 -->
+        <div id="fileUploadSection">
+            <div id="dropZone" class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 h-64 hover:bg-gray-700 cursor-pointer">
+                <p class="text-gray-300 text-lg">파일을 이곳으로 드래그 앤 드롭하거나 클릭하여 업로드.</p>
+                <input type="file" id="fileInput" class="hidden" multiple>
+            </div>
+        </div>
+
+        <!-- 텍스트 입력 영역 -->
+        <div id="textInputSection" class="hidden">
+            <textarea id="textInput" class="w-full p-2 rounded-lg bg-gray-700 focus:outline-none h-32"></textarea>
+            <button id="processText" class="mt-2 w-full py-2 rounded-lg bg-blue-500 hover:bg-blue-400">텍스트 자모 합치기</button>
+        </div>
+
+        <!-- 개발자 정보 -->
+        <div class="text-center mt-8">
+            <p>땅콩킹땅콩🥜</p>
+            <a href="https://gomguk.tistory.com/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300">블로그</a> |
+            <a href="https://github.com/username" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300">GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        // 탭과 섹션 요소 가져오기
+        const tabFile = document.getElementById('tabFile');
+        const tabText = document.getElementById('tabText');
+        const fileUploadSection = document.getElementById('fileUploadSection');
+        const textInputSection = document.getElementById('textInputSection');
+        const nightModeSwitch = document.getElementById('nightModeSwitch');
+        const body = document.body;
+
+        // 탭 이벤트 핸들러
+        tabFile.addEventListener('click', () => {
+            fileUploadSection.style.display = 'block';
+            textInputSection.style.display = 'none';
+        });
+
+        tabText.addEventListener('click', () => {
+            fileUploadSection.style.display = 'none';
+            textInputSection.style.display = 'block';
+        });
+
+        // 초기 탭 설정
+        tabFile.click();
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFiles);
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('bg-blue-100');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-blue-100');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('bg-blue-100');
+            const files = e.dataTransfer.files;
+            handleFiles({ target: { files } });
+        });
+
+        function handleFiles(event) {
+            const files = event.target.files;
+            Array.from(files).forEach(file => {
+                const nfcFilename = file.name.normalize('NFC');
+                const blob = new Blob([file], { type: file.type });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = nfcFilename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+
+    </script>
+</body>
+</html>
