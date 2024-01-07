@@ -17,6 +17,9 @@ Mac과 Windows 환경에서 한글 파일명을 다르게 인코딩하는 문제
    - 텍스트 자소 합치기: 텍스트를 입력하고 변환 버튼을 클릭하여 결과를 확인합니다.
 3. 변환된 파일 또는 텍스트를 사용합니다.
 
+## Special Thanks
+이 프로젝트는 "자모야 모여라" [프로젝트](https://github.com/hyunbinseo/jamoya.one#readme)를 벤치마킹한 것입니다.
+
 ## 라이센스
 이 프로젝트는 MIT 라이센스 하에 제공됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참고하세요.
 
